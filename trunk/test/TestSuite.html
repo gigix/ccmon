@@ -11,8 +11,11 @@
         function suite() {
             var newsuite = new top.jsUnitTestSuite();
             // path related to TestRunner.html
-            newsuite.addTestPage("../CCTrayGadgetTests.html");
-            newsuite.addTestPage("../WebPageTests.html");
+            newsuite.addTestPage("../CCMonitorTests.html");
+            newsuite.addTestPage("../ConfigTests.html");
+
+            // WebPage uses ActiveXObject, makes it's hard to test
+            // newsuite.addTestPage("../WebPageTests.html");
             return newsuite;
         }
     </script>
