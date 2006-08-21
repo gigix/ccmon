@@ -1,14 +1,31 @@
 <html>
 <head>
-    <title>Test Page for CCTrayGadget)</title>
+    <title>Test Page for WebPage</title>
     <script language="javascript" src="jsunit/app/jsUnitCore.js"></script>
     <script language="javascript" src="../code/main.js"></script>
 </head>
 
 <body>
 <script language="javascript">
-    function testShouldHaveASolidBase() {
-        //fail("write WebPage tests here");
+    function testShouldRetrieveHomePageOfGoogle() {
+        var webPage = new WebPage("http://www.google.com/webhp");
+        assert(/G|google/.test(webPage.content()));
+    }
+
+    function testShouldThrowExceptionWhenTargetUrlHasRedirecting() {
+        try {
+            new WebPage("http://www.google.com").content();
+            fail();
+        } catch (e) {
+        }
+    }
+
+    function testShouldThrowExceptionWhenCannotAccessTargetUrl() {
+        try {
+            new WebPage("http://localhost:12345").content();
+            fail();
+        } catch (e) {
+        }
     }
 </script>
 </body>

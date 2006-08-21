@@ -72,5 +72,5 @@ JavaScriptTestTask.new(:test) do |t|
   t.mount("/code")
   t.mount("/test")
   t.run jsunit_tests
-  t.browser(Firefox)
+  t.browser(IE)
 end

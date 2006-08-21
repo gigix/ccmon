@@ -1,0 +1,81 @@
+<html>
+<head>
+    <title>Test Page for CCTrayGadget</title>
+    <script language="javascript" src="jsunit/app/jsUnitCore.js"></script>
+    <script language="javascript" src="../code/main.js"></script>
+</head>
+
+<body>
+<script language="javascript">
+    gadget = new Object();
+    gadget.debug = new Object();
+    gadget.debug.trace = function(msg) {
+        debug(msg);
+    }
+
+    config = new StubConfig();
+
+    function testShouldHaveASolidBase() {
+        assert(true);
+    }
+
+    function testShouldUpdateViewDisplayWhenRefreshingWithDifferentStatus() {
+        lblStatus = new Object();
+        iconStatus = new Object();
+
+        var monitor = new CCMonitor(new Object(), new Object());
+        monitor.refreshDisplay("TEST");
+        assertEquals("TEST", lblStatus.innerText);
+        assertEquals("resources/TEST.ico", iconStatus.src);
+    }
+
+    function testShouldNotUpdateViewDisplayWhenRefreshingWithSameStatus() {
+        lblStatus = new Object();
+        iconStatus = new Object();
+
+        var monitor = new CCMonitor(new Object(), new Object());
+        monitor.refreshDisplay("TEST");
+
+        // how to verify lblStatus and iconStatus not updated
+        // when invoking myGadget.refreshDisplay("TEST") again?
+    }
+
+    function testShouldDisplaySuccessWhenFailedIndicateNotOnPage() {
+        var mockWebPage = new Object();
+        mockWebPage.content = function () {
+            return "BUILD SUCCESSFUL";
+        }
+        var monitor = new CCMonitor(mockWebPage, config.buildFailedIndicate);
+        monitor.refreshDisplay = function(status) {
+            assertEquals(monitor.buildSuccessfulMessage, status);
+        }
+        monitor.checkBuildStatus();
+    }
+
+    function testShouldDisplayFailedWhenFailedIndicateOnPage() {
+        var mockWebPage = new Object();
+        mockWebPage.content = function () {
+            return "BUILD FAILED";
+        }
+        var monitor = new CCMonitor(mockWebPage, config.buildFailedIndicate);
+        monitor.refreshDisplay = function(status) {
+            assertEquals(monitor.buildFailedMessage, status);
+        }
+        monitor.checkBuildStatus();
+    }
+
+    function testShouldDisplayUnknownWhenExceptionThrownWhenAccessPage() {
+        var mockWebPage = new Object();
+        mockWebPage.content = function () {
+            throw "HERE IS SOME EXCEPTION";
+        }
+        var monitor = new CCMonitor(mockWebPage, config.buildFailedIndicate);
+        monitor.refreshDisplay = function(status) {
+            assertEquals(monitor.buildStatusUnknownMessage, status);
+        }
+        monitor.checkBuildStatus();
+    }
+
+</script>
+</body>
+</html>

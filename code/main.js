@@ -1,12 +1,23 @@
-﻿// var resultPageUrl = "http://localhost/MockTestResult.aspx";
-var resultPageUrl = "http://10.6.4.146/cruisecontrol/buildresults/selenium";
-var checkInterval = 60000;	// check per minute
-var buildFailedIndicate = "FAILED";
+﻿function StubConfig() {
+    this.resultPageUrl = "http://10.6.4.146/cruisecontrol/buildresults/selenium";
+    // check per minute
+    this.checkInterval = 60000;
+    this.buildFailedIndicate = "FAILED";
+}
+
+function FileBasedConfig(filename) {
+    //        Set objFile = objFSO.OpenTextFile("C:\FSO\ScriptLog.txt", ForReading)
+    //        strContents = objFile.ReadAll
+    var file = framework.system.filesystem.OpenTextFile(filename, 1);
+    this.rawText = file.ReadAll();
+}
+
+var config = new StubConfig();
 
 function initGadget() {
-    myGadget = new MyGadget(new WebPage(resultPageUrl), buildFailedIndicate);
+    myGadget = new CCMonitor(new WebPage(config.resultPageUrl), config.buildFailedIndicate);
     myGadget.init();
-    setInterval("myGadget.checkBuildStatus()", checkInterval);
+    setInterval("myGadget.checkBuildStatus()", config.checkInterval);
 }
 
 function WebPage(url) {
@@ -27,7 +38,7 @@ function WebPage(url) {
     }
 }
 
-function MyGadget(webPage, buildFailedIndicate) {
+function CCMonitor(webPage, buildFailedIndicate) {
     this.webPage = webPage;
     this.buildFailedIndicate = buildFailedIndicate;
 
@@ -63,7 +74,7 @@ function MyGadget(webPage, buildFailedIndicate) {
             this.refreshDisplay(this.buildStatusUnknownMessage);
             return;
         }
-	gadget.debug.trace(content);
+        gadget.debug.trace(content);
         this.refreshDisplay(this.getBuildStatus(content));
     }
 
