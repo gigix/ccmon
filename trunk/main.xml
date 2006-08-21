@@ -1,0 +1,9 @@
+﻿<view height="70" width="200" onopen="initGadget()">
+    <img height="32" name="iconStatus" width="32" x="6" y="5" src="resources\UNKNOWN.ico"/>
+    <label height="16" name="lblStatus" width="98" x="97" y="15"/>
+    <a height="16" name="lnkPage" width="120" x="6" y="43">Init this gadget first
+    </a>
+    <label height="16" width="52" x="44" y="17">Status:
+    </label>
+    <script src="main.js" />
+</view>
