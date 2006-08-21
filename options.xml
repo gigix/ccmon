@@ -1,0 +1,8 @@
+﻿<view height="200" width="500" onrestore="saveOptions()">
+    <edit height="20" name="txtUrl" width="358" x="127" y="47"/>
+    <label height="16" width="125" x="5" y="52">Result Page URL:
+    </label>
+    <label height="16" width="97" x="4" y="100">Regex Pattern:
+    </label>
+    <edit height="20" name="txtPattern" width="138" x="105" y="96"/>
+</view>
