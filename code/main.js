@@ -1,18 +1,21 @@
-﻿function StubConfig() {
-    this.resultPageUrl = "http://10.6.4.146/cruisecontrol/buildresults/selenium";
-    // check per minute
-    this.checkInterval = 60000;
-    this.buildFailedIndicate = "FAILED";
+﻿options("resultPageUrl") = "http://localhost/MockTestResult.aspx";
+//options("resultPageUrl") = "http://10.6.4.146/cruisecontrol/buildresults/selenium";
+// check per minute
+options("checkInterval") = 3000;
+options("buildFailedIndicate") = "FAILED";
+
+function saveOptions() {
+    // not implemented yet
+    alert(txtUrl.value);
 }
 
-function FileBasedConfig(filename) {
-    //        Set objFile = objFSO.OpenTextFile("C:\FSO\ScriptLog.txt", ForReading)
-    //        strContents = objFile.ReadAll
-    var file = framework.system.filesystem.OpenTextFile(filename, 1);
-    this.rawText = file.ReadAll();
+function OptionsConfig() {
+    this.resultPageUrl = options("resultPageUrl");
+    this.checkInterval = options("checkInterval");
+    this.buildFailedIndicate = options("buildFailedIndicate");
 }
 
-var config = new StubConfig();
+var config = new OptionsConfig();
 
 function initGadget() {
     myGadget = new CCMonitor(new WebPage(config.resultPageUrl), config.buildFailedIndicate);
@@ -62,11 +65,6 @@ function CCMonitor(webPage, buildFailedIndicate) {
         iconStatus.src = "resources/" + this.currentStatus + ".ico";
     }
 
-    this.saveOptions = function() {
-        // not implemented yet
-        alert("Hello");
-    }
-
     this.checkBuildStatus = function() {
         try {
             var content = this.webPage.content();
@@ -74,7 +72,6 @@ function CCMonitor(webPage, buildFailedIndicate) {
             this.refreshDisplay(this.buildStatusUnknownMessage);
             return;
         }
-        gadget.debug.trace(content);
         this.refreshDisplay(this.getBuildStatus(content));
     }
 
