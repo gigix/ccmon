@@ -13,7 +13,12 @@
         debug(msg);
     }
 
-    config = new StubConfig();
+    config = new Object();
+    config.resultPageUrl = "http://10.6.4.146/cruisecontrol/buildresults/selenium";
+    // check per minute
+    config.checkInterval = 60000;
+    config.buildFailedIndicate = "FAILED";
+
 
     function testShouldHaveASolidBase() {
         assert(true);

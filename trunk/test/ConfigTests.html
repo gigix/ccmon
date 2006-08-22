@@ -7,20 +7,8 @@
 
 <body>
 <script language="javascript">
-    function testShouldLoadContentFromFile() {
-        var testContent = "TEST_CONTENT";
-        framework = new Object();
-        framework.system = new Object();
-        framework.system.filesystem = new Object();
-        framework.system.filesystem.OpenTextFile = function(filename, mode) {
-            var file = new Object();
-            file.ReadAll = function() {
-                return testContent;
-            }
-            return file;
-        }
-        var testConfig = new FileBasedConfig('ccmon.test.properties');
-        assertEquals(testContent, testConfig.rawText);
+    function testShouldDoSomething() {
+        //
     }
 
 </script>
