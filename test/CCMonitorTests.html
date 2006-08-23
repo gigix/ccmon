@@ -13,12 +13,17 @@
         debug(msg);
     }
 
-    config = new Object();
-    config.resultPageUrl = "http://10.6.4.146/cruisecontrol/buildresults/selenium";
-    // check per minute
-    config.checkInterval = 60000;
-    config.buildFailedIndicate = "FAILED";
-
+    options = function(key) {
+        if(key == "resultPageUrl") {
+            return "http://10.6.4.146/cruisecontrol/buildresults/selenium";
+        }
+        if(key == "checkInterval") {
+            return 60000;
+        }
+        if(key == "buildFailedIndicate") {
+            return "FAILED";
+        }
+    }
 
     function testShouldHaveASolidBase() {
         assert(true);
@@ -27,16 +32,19 @@
     function testShouldUpdateViewDisplayWhenRefreshingWithDifferentStatus() {
         lblStatus = new Object();
         iconStatus = new Object();
+        lnkPage = new Object();
 
         var monitor = new CCMonitor(new Object(), new Object());
         monitor.refreshDisplay("TEST");
         assertEquals("TEST", lblStatus.innerText);
         assertEquals("resources/TEST.ico", iconStatus.src);
+        assertEquals(options("resultPageUrl"), lnkPage.href);
     }
 
     function testShouldNotUpdateViewDisplayWhenRefreshingWithSameStatus() {
         lblStatus = new Object();
         iconStatus = new Object();
+        lnkPage = new Object();
 
         var monitor = new CCMonitor(new Object(), new Object());
         monitor.refreshDisplay("TEST");
@@ -50,7 +58,7 @@
         mockWebPage.content = function () {
             return "BUILD SUCCESSFUL";
         }
-        var monitor = new CCMonitor(mockWebPage, config.buildFailedIndicate);
+        var monitor = new CCMonitor(mockWebPage, options("buildFailedIndicate"));
         monitor.refreshDisplay = function(status) {
             assertEquals(monitor.buildSuccessfulMessage, status);
         }
@@ -62,7 +70,7 @@
         mockWebPage.content = function () {
             return "BUILD FAILED";
         }
-        var monitor = new CCMonitor(mockWebPage, config.buildFailedIndicate);
+        var monitor = new CCMonitor(mockWebPage, options("buildFailedIndicate"));
         monitor.refreshDisplay = function(status) {
             assertEquals(monitor.buildFailedMessage, status);
         }
@@ -74,7 +82,7 @@
         mockWebPage.content = function () {
             throw "HERE IS SOME EXCEPTION";
         }
-        var monitor = new CCMonitor(mockWebPage, config.buildFailedIndicate);
+        var monitor = new CCMonitor(mockWebPage, options("buildFailedIndicate"));
         monitor.refreshDisplay = function(status) {
             assertEquals(monitor.buildStatusUnknownMessage, status);
         }
