@@ -7,8 +7,48 @@
 
 <body>
 <script language="javascript">
-    function testShouldDoSomething() {
-        //
+    function testShouldSaveOptionsAfterInvokeSaveOptionsMethod() {
+        options = new Object();
+        options.PutValue = function(key, value) {
+            options[key] = value;
+        }
+
+        txtUrl = new Object();
+        txtUrl.value = "TEST_URL";
+        txtPattern = new Object();
+        txtPattern.value = "FAILED";
+        txtInterval = new Object();
+        txtInterval.value = "100";
+
+        saveOptions();
+
+        assertEquals("TEST_URL", options.resultPageUrl);
+        assertEquals(100, options.checkInterval);
+        assertEquals("FAILED", options.buildFailedIndicate);
+    }
+
+    function testShouldDisplayOptionsWhenOptionsPageOnLoad() {
+        options = function(key) {
+            if(key == "resultPageUrl") {
+                return "TEST_URL";
+            }
+            if(key == "checkInterval") {
+                return 100;
+            }
+            if(key == "buildFailedIndicate") {
+                return "FAILED";
+            }
+        }
+
+        txtUrl = new Object();
+        txtPattern = new Object();
+        txtInterval = new Object();
+
+        displayOptions();
+
+        assertEquals("TEST_URL", txtUrl.value);
+        assertEquals("100", txtInterval.value);
+        assertEquals("FAILED", txtPattern.value);
     }
 
 </script>

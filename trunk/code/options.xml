@@ -1,10 +1,13 @@
-﻿<view height="200" width="500" onclose="saveOptions()">
-    <script src="main.js"/>
-
-    <edit height="20" name="txtUrl" width="358" x="127" y="47"/>
-    <label height="16" width="125" x="5" y="52">Result Page URL:
+﻿<view height="200" width="500" onclose="saveOptions()" onopen="displayOptions()"
+ >
+    <edit height="20" name="txtUrl" width="358" x="132" y="20"/>
+    <label height="16" width="125" x="10" y="25">Result Page URL:
     </label>
-    <label height="16" width="97" x="4" y="100">Regex Pattern:
+    <label height="16" width="97" x="11" y="68">Regex Pattern:
     </label>
-    <edit height="20" name="txtPattern" width="138" x="105" y="96"/>
+    <edit height="20" name="txtPattern" width="138" x="112" y="64"/>
+    <label height="16" width="97" x="12" y="114">Check Interval:
+    </label>
+    <edit height="20" name="txtInterval" width="67" x="114" y="110"/>
+    <script src="main.js" />
 </view>

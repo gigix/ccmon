@@ -1,43 +1,50 @@
-﻿options("resultPageUrl") = "http://localhost/MockTestResult.aspx";
-//options("resultPageUrl") = "http://10.6.4.146/cruisecontrol/buildresults/selenium";
-// check per minute
-options("checkInterval") = 3000;
-options("buildFailedIndicate") = "FAILED";
+options.defaultValue("resultPageUrl") = "http://localhost/MockTestResult";
+options.defaultValue("checkInterval") = 3000;
+options.defaultValue("buildFailedIndicate") = "FAILED";
 
-function saveOptions() {
-    // not implemented yet
-    alert(txtUrl.value);
+function saveOptions(wnd) {
+    options.PutValue("resultPageUrl", txtUrl.value);
+    options.PutValue("buildFailedIndicate", txtPattern.value);
+    options.PutValue("checkInterval", parseInt(txtInterval.value));
 }
 
-function OptionsConfig() {
-    this.resultPageUrl = options("resultPageUrl");
-    this.checkInterval = options("checkInterval");
-    this.buildFailedIndicate = options("buildFailedIndicate");
+function displayOptions() {
+    txtUrl.value = options("resultPageUrl");
+    txtPattern.value = options("buildFailedIndicate");
+    txtInterval.value = options("checkInterval").toString();
 }
-
-var config = new OptionsConfig();
 
 function initGadget() {
-    myGadget = new CCMonitor(new WebPage(config.resultPageUrl), config.buildFailedIndicate);
+    myGadget = new CCMonitor(new WebPage(options("resultPageUrl")), options("buildFailedIndicate"));
     myGadget.init();
-    setInterval("myGadget.checkBuildStatus()", config.checkInterval);
+    setInterval("myGadget.checkBuildStatus()", options("checkInterval"));
 }
 
 function WebPage(url) {
     this.url = url;
+    pageText = "";
 
     this.content = function() {
+        // should use async mode of xmlhttp
         var xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
         // is there any other way to disable cache?
         var actualUrl = this.url + "?" + new Date().toTimeString();
-        xmlhttp.open("GET", actualUrl, false);
-        xmlhttp.send();
-
-        if (xmlhttp.status != 200) { // what if redirecting exists?
-            throw "Cannot get page content : " + actualUrl;
+        xmlhttp.open("GET", actualUrl, true);
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4) {
+                if (xmlhttp.status != 200) { // doesn't work if redirecting exists
+                    pageText = "";
+                } else {
+                    pageText = xmlhttp.responseText;
+                }
+            }
         }
+        xmlhttp.send(null);
 
-        return xmlhttp.responseText;
+        if (pageText == "") {
+            throw "Build status unknown yet";
+        }
+        return pageText;
     }
 }
 
@@ -63,6 +70,7 @@ function CCMonitor(webPage, buildFailedIndicate) {
         this.currentStatus = status;
         lblStatus.innerText = this.currentStatus;
         iconStatus.src = "resources/" + this.currentStatus + ".ico";
+        lnkPage.href = options("resultPageUrl");
     }
 
     this.checkBuildStatus = function() {
