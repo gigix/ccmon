@@ -1,5 +1,5 @@
-﻿<view height="200" width="500" onclose="saveOptions()" onopen="displayOptions()"
- >
+﻿<view caption="CCMon Config" height="200" width="500" onclose="saveOptions()"
+  onopen="displayOptions()">
     <edit height="20" name="txtUrl" width="358" x="132" y="20"/>
     <label height="16" width="125" x="10" y="25">Result Page URL:
     </label>

@@ -1,5 +1,5 @@
-﻿<view height="70" width="200" onopen="initGadget()" onoptionchanged="initGadget()"
- >
+﻿<view caption="CCMon" height="70" width="200" onopen="initGadget()"
+  onoptionchanged="initGadget()">
     <img height="32" name="iconStatus" width="32" x="6" y="5" src="resources\UNKNOWN.ico"/>
     <label height="16" name="lblStatus" width="98" x="97" y="15"/>
     <a height="16" name="lnkPage" width="177" x="6" y="43">Browse build result page
