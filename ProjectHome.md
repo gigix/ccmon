@@ -1,0 +1,1 @@
+It's a Google gadget which can monitor CruiseControl(http://cruisecontrol.sf.net) build result and notify developers about project healthy status.
